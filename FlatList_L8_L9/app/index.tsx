@@ -1,20 +1,19 @@
+import ListItem from "@/components/ListItem";
 import ListItemSeparator from "@/components/ListItemSeperator";
 import { DATA, dataType } from "@/data/appData";
-import colors from "@/styles/colors";
 import defaultStyles from "@/styles/defaultStyles";
 import { useState } from "react";
 import {
   FlatList,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View
 } from "react-native";
 
 export default function Index() {
 
   // Create a state var to keep track of selected id
-  const[selectedId, setSelectedId] = useState<string>('1');
+  const[selectedId, setSelectedId] = useState<string>('');
 
   // Funciton to log what selected and display
   const itemSelected = (item: dataType) => {
@@ -37,17 +36,11 @@ export default function Index() {
               <ListItemSeparator color = 'lightblue'/>)
             }
             renderItem = {({item}) => (
-              <TouchableOpacity onPress = {() => itemSelected(item)}>
-                <View style = {[styles.flatListRow, {
-                  backgroundColor: item.id === selectedId ? 
-                  colors.primary: colors.secondary
-                }]}>
-                  <Text style = {[styles.titleText,{
-                    color: item.id === selectedId ? 
-                    colors.secondary: colors.primary
-                  }]}>{item.title}</Text>
-                </View>
-              </TouchableOpacity>
+             <ListItem 
+              item={item}
+              isSelected={item.id === selectedId}
+              onPress={itemSelected}
+             />
             )}
           />
         </View>
@@ -60,11 +53,14 @@ const styles = StyleSheet.create({
   flatlist: {
     alignItems: "center",
   },
-  titleContainer: {
+  flatListRow: {
     marginTop: 5,
     width: 300,
     borderTopLeftRadius: 15,
     borderTopRightRadius: 15,
   },
-
+  titleText: {
+    fontSize: 24,
+    padding: 10,
+  },
 });
